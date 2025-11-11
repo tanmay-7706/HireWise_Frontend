@@ -3,7 +3,7 @@ import { FaBrain, FaFileAlt, FaMicrophone, FaChartLine } from "react-icons/fa"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-linear-to-r from-blue-50 via-white to-indigo-50">
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 py-20 text-center">
         <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">

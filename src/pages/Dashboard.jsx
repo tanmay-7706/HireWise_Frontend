@@ -58,7 +58,7 @@ export default function Dashboard() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* User Profile Card */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+            <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Your Profile</h2>
               <div className="space-y-3">
                 <div>
@@ -77,7 +77,7 @@ export default function Dashboard() {
             </div>
 
             {/* Features Card */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
+            <div className="bg-linear-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">HireWise Features</h2>
               <ul className="space-y-2">
                 <li className="flex items-center space-x-2 text-gray-700">
