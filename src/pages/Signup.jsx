@@ -23,8 +23,8 @@ export default function Signup() {
 
     try {
       const response = await authAPI.signup(formData)
-      setToken(response.data.token)
-      setUser(response.data.user)
+      setToken(response.data.data.token)
+      setUser(response.data.data.user)
       navigate("/dashboard")
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.")
