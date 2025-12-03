@@ -28,6 +28,7 @@ api.interceptors.request.use(
 export const authAPI = {
   signup: (data) => api.post("/api/auth/signup", data),
   login: (data) => api.post("/api/auth/login", data),
+  googleLogin: (token) => api.post("/api/auth/google", { token }),
   logout: () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
