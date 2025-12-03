@@ -65,4 +65,11 @@ export const interviewAPI = {
   delete: (id) => api.delete(`/api/interview/${id}`)
 }
 
+export const careerAPI = {
+  generate: (data) => api.post("/api/career/generate", data),
+  getAll: () => api.get("/api/career"),
+  getById: (id) => api.get(`/api/career/${id}`),
+  delete: (id) => api.delete(`/api/career/${id}`)
+}
+
 export default api

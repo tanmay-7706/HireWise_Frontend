@@ -1,0 +1,65 @@
+<svg viewBox="0 0 180 50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="accentGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Icon container with rounded background -->
+  <rect x="2" y="8" width="34" height="34" rx="8" fill="url(#brandGradient)" opacity="0.95"/>
+  
+  <!-- Abstract AI brain/network icon -->
+  <g transform="translate(19, 25)">
+    <!-- Center hexagon -->
+    <path d="M 0,-5 L 4.33,-2.5 L 4.33,2.5 L 0,5 L -4.33,2.5 L -4.33,-2.5 Z" 
+          fill="white" opacity="0.9"/>
+    
+    <!-- Neural connections -->
+    <circle cx="-8" cy="-6" r="2" fill="white" opacity="0.8"/>
+    <circle cx="8" cy="-6" r="2" fill="white" opacity="0.8"/>
+    <circle cx="-8" cy="6" r="2" fill="white" opacity="0.8"/>
+    <circle cx="8" cy="6" r="2" fill="white" opacity="0.8"/>
+    
+    <!-- Connection lines -->
+    <line x1="-6" y1="-5" x2="-3" y2="-2.5" stroke="white" stroke-width="1" opacity="0.6"/>
+    <line x1="6" y1="-5" x2="3" y2="-2.5" stroke="white" stroke-width="1" opacity="0.6"/>
+    <line x1="-6" y1="5" x2="-3" y2="2.5" stroke="white" stroke-width="1" opacity="0.6"/>
+    <line x1="6" y1="5" x2="3" y2="2.5" stroke="white" stroke-width="1" opacity="0.6"/>
+  </g>
+  
+  <!-- Checkmark accent -->
+  <circle cx="31" cy="14" r="6" fill="url(#accentGlow)"/>
+  <path d="M 28.5 14 L 30 15.5 L 33.5 11.5" fill="none" stroke="white" 
+        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Brand text -->
+  <text x="45" y="32" font-family="'Inter', 'Segoe UI', Arial, sans-serif" 
+        font-size="20" font-weight="700" fill="#1F2937" letter-spacing="-0.5">
+    Hire<tspan fill="url(#brandGradient)">Wise</tspan>
+  </text>
+  
+  <!-- Tagline/subtitle -->
+  <text x="45" y="40" font-family="'Inter', 'Segoe UI', Arial, sans-serif" 
+        font-size="7" font-weight="500" fill="#6B7280" letter-spacing="0.5">
+    AI-POWERED HIRING
+  </text>
+  
+  <!-- Subtle sparkle -->
+  <path d="M 140 15 L 141 17 L 143 18 L 141 19 L 140 21 L 139 19 L 137 18 L 139 17 Z" 
+        fill="url(#accentGlow)" opacity="0.6"/>
+</svg>

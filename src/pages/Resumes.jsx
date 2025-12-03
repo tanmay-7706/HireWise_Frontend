@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { FaSpinner, FaTrash, FaEye, FaPlus, FaRobot } from "react-icons/fa"
+import { FaFilePdf, FaTrash, FaEye, FaSearch, FaPlus, FaSpinner, FaArrowLeft } from "react-icons/fa"
 import { resumeAPI } from "../utils/api"
 
 export default function Resumes() {
   const [resumes, setResumes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -16,110 +17,164 @@ export default function Resumes() {
   const fetchResumes = async () => {
     try {
       const response = await resumeAPI.getAll()
-      setResumes(response.data.data || [])
+      setResumes(response.data.data)
     } catch (err) {
-      console.error('Fetch resumes error:', err)
-      setError(err.response?.data?.message || "Failed to fetch resumes")
+      console.error("Fetch resumes error:", err)
+      setError("Failed to load resumes.")
     } finally {
       setLoading(false)
     }
   }
 
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this resume?")) return
+    if (!window.confirm("Are you sure you want to delete this resume?")) return
 
     try {
       await resumeAPI.delete(id)
-      setResumes(resumes.filter(r => r._id !== id))
+      setResumes(resumes.filter((resume) => resume._id !== id))
     } catch (err) {
-      alert("Failed to delete resume")
+      console.error("Delete resume error:", err)
+      alert("Failed to delete resume.")
     }
   }
 
+  const filteredResumes = resumes.filter((resume) =>
+    resume?.fileName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    resume?.originalName?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <FaSpinner className="text-4xl text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading resumes...</p>
+      <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="flex flex-col items-center space-y-4">
+          <FaSpinner className="animate-spin text-4xl text-emerald-600 dark:text-emerald-400" />
+          <p className="text-slate-600 dark:text-slate-400 font-medium">Loading resumes...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8">
+    <div className="min-h-[calc(100vh-64px)] bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">My Resumes</h1>
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="flex items-center text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 mb-8 transition-colors"
+        >
+          <FaArrowLeft className="mr-2" /> Back to Dashboard
+        </button>
+
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">My Resumes</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Manage and analyze your uploaded resumes</p>
+          </div>
           <button
             onClick={() => navigate("/resume/upload")}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center space-x-2"
+            className="flex items-center px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition shadow-lg hover:shadow-emerald-500/30 w-full md:w-auto justify-center"
           >
-            <FaPlus />
-            <span>Upload Resume</span>
+            <FaPlus className="mr-2" /> Upload New Resume
           </button>
         </div>
 
+        {/* Search Bar */}
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 mb-8 flex items-center">
+          <FaSearch className="text-slate-400 ml-2" />
+          <input
+            type="text"
+            placeholder="Search resumes..."
+            className="w-full ml-4 bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white placeholder-slate-400"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
 
-        {resumes.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <p className="text-gray-600 text-lg mb-4">No resumes uploaded yet</p>
-            <button
-              onClick={() => navigate("/resume/upload")}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Upload Your First Resume
-            </button>
+        {filteredResumes.length === 0 ? (
+          <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+            <div className="bg-slate-100 dark:bg-slate-700 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FaFilePdf className="text-4xl text-slate-400 dark:text-slate-500" />
+            </div>
+            <h3 className="text-xl font-medium text-slate-900 dark:text-white mb-2">No resumes found</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              {searchTerm ? "Try adjusting your search terms" : "Upload your first resume to get started"}
+            </p>
+            {!searchTerm && (
+              <button
+                onClick={() => navigate("/resume/upload")}
+                className="text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500"
+              >
+                Upload Resume
+              </button>
+            )}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {resumes.map((resume) => (
-              <div key={resume._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2 truncate">
-                  {resume.originalName || resume.filename}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Uploaded: {new Date(resume.createdAt).toLocaleDateString()}
-                </p>
-                
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm text-gray-600">Status</span>
-                    <span className={`text-sm font-semibold ${
-                      resume.status === 'screened' ? 'text-green-600' : 
-                      resume.status === 'parsed' ? 'text-blue-600' : 'text-gray-600'
-                    }`}>
-                      {resume.status?.charAt(0).toUpperCase() + resume.status?.slice(1) || 'Uploaded'}
-                    </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredResumes.map((resume) => (
+              <div
+                key={resume._id}
+                className="bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-all duration-300 group"
+              >
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-xl">
+                      <FaFilePdf className="text-2xl text-red-600 dark:text-red-400" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => window.open(resume.fileUrl, "_blank")}
+                        className="p-2 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
+                        title="View PDF"
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(resume._id)}
+                        className="p-2 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30"
+                        title="Delete"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                  
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 truncate" title={resume.fileName}>
+                    {resume.fileName}
+                  </h3>
+                  
+                  <div className="space-y-2 mb-6">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Uploaded: {new Date(resume.createdAt).toLocaleDateString()}
+                    </p>
+                    {resume.skills && resume.skills.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {resume.skills.slice(0, 3).map((skill, index) => (
+                          <span 
+                            key={index}
+                            className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-md"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                        {resume.skills.length > 3 && (
+                          <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-md">
+                            +{resume.skills.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => navigate(`/resume/${resume._id}`)}
-                    className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center space-x-1"
-                  >
-                    <FaEye />
-                    <span>View</span>
-                  </button>
                   <button
                     onClick={() => navigate(`/resume/${resume._id}/screen`)}
-                    className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-1"
+                    className="w-full py-3 px-4 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl font-medium hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors flex items-center justify-center"
                   >
-                    <FaRobot />
-                    <span>Screen</span>
-                  </button>
-                  <button
-                    onClick={() => handleDelete(resume._id)}
-                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-                  >
-                    <FaTrash />
+                    <FaSearch className="mr-2" /> AI Screen Resume
                   </button>
                 </div>
               </div>
