@@ -66,27 +66,43 @@ export default function InterviewChat() {
     setInput("")
     setSending(true)
 
-    // Simulate AI response (since backend AI is not connected in this demo)
-    setTimeout(() => {
-      const aiResponses = [
-        "That's an interesting point. Can you elaborate on that?",
-        "Good answer. Now, let's move on to a more technical question.",
-        "I see. How would you handle a situation where that approach fails?",
-        "Excellent. Could you give me an example from your past experience?",
-        "Thank you. Let's switch gears a bit."
-      ]
-      const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)]
-      
-      const aiMessage = {
+    try {
+      // Build context from recent messages
+      const recentMessages = messages.slice(-5).map(m => 
+        `${m.sender === 'user' ? 'Candidate' : 'Interviewer'}: ${m.text}`
+      ).join('\n')
+
+      // Call Gemini AI via backend
+      const response = await interviewAPI.chat(id, {
+        message: input,
+        jobTitle: interview?.type || 'mock',
+        context: recentMessages
+      })
+
+      if (response.data.success) {
+        const aiMessage = {
+          id: messages.length + 2,
+          sender: "ai",
+          text: response.data.data.message,
+          timestamp: new Date()
+        }
+        setMessages((prev) => [...prev, aiMessage])
+      } else {
+        throw new Error(response.data.message)
+      }
+    } catch (err) {
+      console.error("AI response error:", err)
+      // Fallback message if AI fails
+      const errorMessage = {
         id: messages.length + 2,
         sender: "ai",
-        text: randomResponse,
+        text: "I apologize, but I'm having trouble connecting right now. Let's try again. Could you repeat your last response?",
         timestamp: new Date()
       }
-      
-      setMessages((prev) => [...prev, aiMessage])
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
       setSending(false)
-    }, 1500)
+    }
   }
 
   if (loading) {

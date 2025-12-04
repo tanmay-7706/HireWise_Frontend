@@ -68,7 +68,9 @@ export const interviewAPI = {
   getAll: (params) => api.get("/api/interview", { params }),
   getById: (id) => api.get(`/api/interview/${id}`),
   update: (id, data) => api.put(`/api/interview/${id}`, data),
-  delete: (id) => api.delete(`/api/interview/${id}`)
+  delete: (id) => api.delete(`/api/interview/${id}`),
+  chat: (id, data) => api.post(`/api/interview/${id}/chat`, data),
+  generateQuestions: (id, data) => api.post(`/api/interview/${id}/questions`, data)
 }
 
 export const careerAPI = {

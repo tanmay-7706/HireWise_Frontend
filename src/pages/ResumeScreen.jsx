@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { FaSpinner, FaCheckCircle, FaTimesCircle, FaArrowLeft, FaBriefcase, FaChartPie } from "react-icons/fa"
 import { resumeAPI, jdAPI } from "../utils/api"
-import axios from "axios"
+import api from "../utils/api"
 
 export default function ResumeScreen() {
   const { id } = useParams()
@@ -23,11 +23,12 @@ export default function ResumeScreen() {
         const [resumeRes, jdsRes, mockJDsRes] = await Promise.all([
           resumeAPI.getById(id),
           jdAPI.getAll(),
-          axios.get('/api/mockjd')
+          api.get('/api/mockjd')
         ])
         setResume(resumeRes.data.data)
-        setJds(jdsRes.data.data)
+        setJds(jdsRes.data.data || [])
         setMockJDs(mockJDsRes.data.data || [])
+        console.log('Mock JDs loaded:', mockJDsRes.data.data?.length || 0)
       } catch (err) {
         console.error("Fetch data error:", err)
         setError("Failed to load data.")
@@ -211,12 +212,12 @@ export default function ResumeScreen() {
                     />
                     <circle
                       className={`${
-                        result.matchScore >= 70 ? "text-green-500" : 
-                        result.matchScore >= 40 ? "text-yellow-500" : "text-red-500"
+                        (result.matchScore || 0) >= 70 ? "text-green-500" : 
+                        (result.matchScore || 0) >= 40 ? "text-yellow-500" : "text-red-500"
                       } transition-all duration-1000 ease-out`}
                       strokeWidth="12"
                       strokeDasharray={440}
-                      strokeDashoffset={440 - (440 * result.matchScore) / 100}
+                      strokeDashoffset={440 - (440 * (result.matchScore || 0)) / 100}
                       strokeLinecap="round"
                       stroke="currentColor"
                       fill="transparent"
@@ -226,7 +227,7 @@ export default function ResumeScreen() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center">
-                    <span className="text-4xl font-bold text-slate-900 dark:text-white">{result.matchScore}%</span>
+                    <span className="text-4xl font-bold text-slate-900 dark:text-white">{result.matchScore || 0}%</span>
                     <span className="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Match</span>
                   </div>
                 </div>
@@ -270,9 +271,36 @@ export default function ResumeScreen() {
 
               <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
                 <h3 className="font-bold text-slate-900 dark:text-white mb-3">AI Feedback</h3>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-xl border border-emerald-100 dark:border-emerald-800/50">
-                  {result.analysis}
-                </p>
+                <div className="text-slate-700 dark:text-slate-300 leading-relaxed bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-xl border border-emerald-100 dark:border-emerald-800/50 whitespace-pre-line">
+                  {result.analysis?.split('\n').map((line, idx) => {
+                    // Make section headers bold
+                    if (line.match(/^[A-Z][A-Z\s]+:/)) {
+                      return (
+                        <p key={idx} className="font-bold text-emerald-700 dark:text-emerald-400 mt-4 mb-2 first:mt-0">
+                          {line}
+                        </p>
+                      )
+                    }
+                    // Style bullet points
+                    if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
+                      return (
+                        <p key={idx} className="pl-4 py-0.5">
+                          {line}
+                        </p>
+                      )
+                    }
+                    // Style numbered items
+                    if (line.match(/^\d+\./)) {
+                      return (
+                        <p key={idx} className="pl-4 py-0.5">
+                          {line}
+                        </p>
+                      )
+                    }
+                    // Regular text
+                    return line.trim() ? <p key={idx} className="py-0.5">{line}</p> : <br key={idx} />
+                  })}
+                </div>
               </div>
             </div>
           </div>
