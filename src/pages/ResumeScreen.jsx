@@ -2,13 +2,16 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { FaSpinner, FaCheckCircle, FaTimesCircle, FaArrowLeft, FaBriefcase, FaChartPie } from "react-icons/fa"
 import { resumeAPI, jdAPI } from "../utils/api"
+import axios from "axios"
 
 export default function ResumeScreen() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [resume, setResume] = useState(null)
   const [jds, setJds] = useState([])
+  const [mockJDs, setMockJDs] = useState([])
   const [selectedJd, setSelectedJd] = useState("")
+  const [selectedJdType, setSelectedJdType] = useState("") // "user" or "mock"
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(true)
   const [analyzing, setAnalyzing] = useState(false)
@@ -17,12 +20,14 @@ export default function ResumeScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resumeRes, jdsRes] = await Promise.all([
+        const [resumeRes, jdsRes, mockJDsRes] = await Promise.all([
           resumeAPI.getById(id),
-          jdAPI.getAll()
+          jdAPI.getAll(),
+          axios.get('/api/mockjd')
         ])
         setResume(resumeRes.data.data)
         setJds(jdsRes.data.data)
+        setMockJDs(mockJDsRes.data.data || [])
       } catch (err) {
         console.error("Fetch data error:", err)
         setError("Failed to load data.")
@@ -44,8 +49,19 @@ export default function ResumeScreen() {
     setResult(null)
 
     try {
-      const response = await resumeAPI.screen(id, selectedJd)
-      setResult(response.data.data)
+      // If it's a mock JD, we need to pass the description directly
+      if (selectedJdType === "mock") {
+        const mockJD = mockJDs.find(jd => jd.id === selectedJd)
+        if (mockJD) {
+          // Screen using the mock JD description
+          const response = await resumeAPI.screen(id, mockJD.id)
+          setResult(response.data.data)
+        }
+      } else {
+        // User's own JD
+        const response = await resumeAPI.screen(id, selectedJd)
+        setResult(response.data.data)
+      }
     } catch (err) {
       console.error("Screening error:", err)
       setError("Analysis failed. Please try again.")
@@ -102,23 +118,54 @@ export default function ResumeScreen() {
               <div className="relative">
                 <select
                   value={selectedJd}
-                  onChange={(e) => setSelectedJd(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setSelectedJd(value)
+                    // Determine if it's a mock JD or user JD
+                    if (value.startsWith('jd-')) {
+                      setSelectedJdType('mock')
+                    } else {
+                      setSelectedJdType('user')
+                    }
+                  }}
                   className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white appearance-none"
                 >
                   <option value="">-- Choose a Job Description --</option>
-                  {jds.map((jd) => (
-                    <option key={jd._id} value={jd._id}>
-                      {jd.title} at {jd.company}
-                    </option>
-                  ))}
+                  
+                  {/* User's JDs */}
+                  {jds.length > 0 && (
+                    <optgroup label="📁 Your Job Descriptions">
+                      {jds.map((jd) => (
+                        <option key={jd._id} value={jd._id}>
+                          {jd.title} at {jd.company}
+                        </option>
+                      ))}
+                    </optgroup>
+                  )}
+                  
+                  {/* Mock JDs */}
+                  {mockJDs.length > 0 && (
+                    <optgroup label="⭐ Sample Job Descriptions (Practice)">
+                      {mockJDs.map((jd) => (
+                        <option key={jd.id} value={jd.id}>
+                          {jd.title} - {jd.category}
+                        </option>
+                      ))}
+                    </optgroup>
+                  )}
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500 dark:text-slate-400">
                   <FaBriefcase />
                 </div>
               </div>
-              {jds.length === 0 && (
+              {jds.length === 0 && mockJDs.length === 0 && (
                 <p className="text-sm text-amber-600 dark:text-amber-400 mt-2">
-                  No job descriptions found. <span onClick={() => navigate("/job-descriptions")} className="underline cursor-pointer font-medium">Create one first</span>.
+                  No job descriptions available. <span onClick={() => navigate("/job-descriptions")} className="underline cursor-pointer font-medium">Create one</span> or use sample JDs above.
+                </p>
+              )}
+              {selectedJdType === 'mock' && (
+                <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2 flex items-center">
+                  <FaCheckCircle className="mr-1" /> Using sample JD for practice
                 </p>
               )}
             </div>

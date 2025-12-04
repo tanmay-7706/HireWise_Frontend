@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { FaRocket, FaFileAlt, FaRobot, FaCheckCircle, FaArrowRight } from "react-icons/fa"
+import { FaRocket, FaFileAlt, FaRobot, FaCheckCircle, FaArrowRight, FaUpload, FaChartLine, FaBriefcase, FaUsers, FaStar, FaQuoteLeft } from "react-icons/fa"
 import { isAuthenticated } from "../utils/auth"
 
 export default function Home() {
@@ -55,6 +55,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trust Indicators Section */}
+      <section className="py-12 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold text-emerald-600 dark:text-emerald-400">10K+</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Active Users</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold text-emerald-600 dark:text-emerald-400">50K+</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Resumes Screened</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold text-emerald-600 dark:text-emerald-400">95%</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Success Rate</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold text-emerald-600 dark:text-emerald-400">24/7</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">AI Support</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section id="features" className="py-24 bg-white dark:bg-slate-900 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,6 +123,189 @@ export default function Home() {
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                 Track your progress, manage job applications, and get personalized insights to fast-track your career growth.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Get started in minutes and land your dream job faster
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="relative mx-auto w-20 h-20 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center mb-6">
+                <FaUpload className="text-3xl text-emerald-600 dark:text-emerald-400" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Upload Resume</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Upload your resume in seconds and let our AI analyze it</p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="relative mx-auto w-20 h-20 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center mb-6">
+                <FaChartLine className="text-3xl text-teal-600 dark:text-teal-400" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Get Insights</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Receive detailed feedback and optimization tips</p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="relative mx-auto w-20 h-20 bg-amber-100 dark:bg-amber-900/50 rounded-full flex items-center justify-center mb-6">
+                <FaRobot className="text-3xl text-amber-600 dark:text-amber-400" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Practice Interview</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Practice with AI-powered mock interviews</p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="text-center">
+              <div className="relative mx-auto w-20 h-20 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center mb-6">
+                <FaBriefcase className="text-3xl text-emerald-600 dark:text-emerald-400" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Land the Job</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Get hired at your dream company with confidence</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Visual Feature Showcase */}
+      <section className="py-24 bg-white dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-8 border border-emerald-100 dark:border-emerald-800">
+                <div className="space-y-4">
+                  <div className="text-6xl">📝</div>
+                  <h4 className="text-2xl font-bold text-slate-900 dark:text-white">Resume Screening</h4>
+                  <p className="text-slate-600 dark:text-slate-400">AI-powered analysis to optimize your resume</p>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                Build a Resume That Gets You Noticed
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <FaCheckCircle className="text-emerald-600 dark:text-emerald-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white">ATS-Friendly Formatting</h4>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Ensure your resume passes automated screening systems</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <FaCheckCircle className="text-emerald-600 dark:text-emerald-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white">Keyword Optimization</h4>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Match job descriptions with relevant keywords</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <FaCheckCircle className="text-emerald-600 dark:text-emerald-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white">Instant Feedback</h4>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Get actionable suggestions in real-time</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Loved by Job Seekers
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              See what our users have to say about their experience
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-lg">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} className="text-yellow-400 text-sm" />
+                ))}
+              </div>
+              <FaQuoteLeft className="text-3xl text-emerald-200 dark:text-emerald-900/50 mb-4" />
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
+                "HireWise helped me optimize my resume and land interviews at top tech companies. The AI feedback was incredibly valuable!"
+              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold mr-3">
+                  SS
+                </div>
+                <div>
+                  <div className="font-semibold text-slate-900 dark:text-white">Sarah Smith</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Software Engineer</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-lg">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} className="text-yellow-400 text-sm" />
+                ))}
+              </div>
+              <FaQuoteLeft className="text-3xl text-emerald-200 dark:text-emerald-900/50 mb-4" />
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
+                "The mock interview feature gave me the confidence I needed. I aced my real interview and got the job!"
+              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center text-teal-600 dark:text-teal-400 font-bold mr-3">
+                  MJ
+                </div>
+                <div>
+                  <div className="font-semibold text-slate-900 dark:text-white">Michael Johnson</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Product Manager</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-lg">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} className="text-yellow-400 text-sm" />
+                ))}
+              </div>
+              <FaQuoteLeft className="text-3xl text-emerald-200 dark:text-emerald-900/50 mb-4" />
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
+                "Game changer! The career roadmap feature helped me plan my path. Got promoted within 6 months!"
+              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/50 rounded-full flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold mr-3">
+                  EP
+                </div>
+                <div>
+                  <div className="font-semibold text-slate-900 dark:text-white">Emily Parker</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Data Analyst</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -16,7 +16,12 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`
       console.log("API Request:", config.method.toUpperCase(), config.url, "- Token present")
     } else {
-      console.warn("API Request:", config.method.toUpperCase(), config.url, "- NO TOKEN")
+      const publicEndpoints = ["/api/auth/signup", "/api/auth/login", "/api/auth/google"];
+      const isPublicEndpoint = publicEndpoints.includes(config.url);
+
+      if (!isPublicEndpoint) {
+        console.warn("API Request:", config.method.toUpperCase(), config.url, "- NO TOKEN");
+      }
     }
     return config
   },
