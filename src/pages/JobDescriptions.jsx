@@ -346,7 +346,7 @@ export default function JobDescriptions() {
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {jd.requiredSkills.slice(0, 3).map((skill, index) => (
+                    {(Array.isArray(jd.requiredSkills) ? jd.requiredSkills : []).slice(0, 3).map((skill, index) => (
                       <span 
                         key={index}
                         className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-600"
@@ -354,7 +354,7 @@ export default function JobDescriptions() {
                         {skill}
                       </span>
                     ))}
-                    {jd.requiredSkills.length > 3 && (
+                    {Array.isArray(jd.requiredSkills) && jd.requiredSkills.length > 3 && (
                       <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-600">
                         +{jd.requiredSkills.length - 3}
                       </span>
