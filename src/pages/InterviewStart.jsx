@@ -35,7 +35,7 @@ export default function InterviewStart() {
           <FaArrowLeft className="mr-2" /> Back to Dashboard
         </button>
 
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden animate-fade-in-up">
           <div className="bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-900 dark:to-teal-900 px-8 py-10 text-center">
             <div className="bg-white/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
               <FaRobot className="text-4xl text-white" />
@@ -100,7 +100,7 @@ export default function InterviewStart() {
                     "Instant feedback on your answers",
                     "Comprehensive performance report"
                   ].map((item, idx) => (
-                    <li key={idx} className="flex items-start text-emerald-800 dark:text-indigo-200 text-sm">
+                    <li key={idx} className="flex items-start text-emerald-800 dark:text-emerald-200 text-sm">
                       <FaCheckCircle className="mt-0.5 mr-2 text-emerald-500 flex-shrink-0" />
                       <span>{item}</span>
                     </li>

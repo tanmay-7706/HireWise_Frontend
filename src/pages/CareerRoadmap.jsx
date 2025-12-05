@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { FaMapMarkedAlt, FaRocket, FaSpinner, FaArrowLeft, FaCheckCircle, FaBook, FaClock, FaTrash } from "react-icons/fa"
 import { careerAPI } from "../utils/api"
+import { useToast } from "../components/Toast"
+import { useConfirm } from "../components/ConfirmModal"
 
 export default function CareerRoadmap() {
   const [targetRole, setTargetRole] = useState("")
@@ -11,6 +13,8 @@ export default function CareerRoadmap() {
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState("")
   const navigate = useNavigate()
+  const toast = useToast()
+  const confirm = useConfirm()
 
   useEffect(() => {
     fetchRoadmaps()
@@ -54,7 +58,16 @@ export default function CareerRoadmap() {
 
   const handleDelete = async (id, e) => {
     e.stopPropagation()
-    if (!window.confirm("Delete this roadmap?")) return
+    
+    const confirmed = await confirm({
+      title: "Delete Roadmap",
+      message: "Are you sure you want to delete this career roadmap?",
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      type: "danger"
+    })
+    
+    if (!confirmed) return
 
     try {
       await careerAPI.delete(id)
@@ -63,8 +76,10 @@ export default function CareerRoadmap() {
       if (selectedRoadmap?._id === id) {
         setSelectedRoadmap(updatedRoadmaps[0] || null)
       }
+      toast.success("Roadmap deleted successfully")
     } catch (err) {
       console.error("Delete roadmap error:", err)
+      toast.error("Failed to delete roadmap")
     }
   }
 
@@ -137,7 +152,7 @@ export default function CareerRoadmap() {
                       onClick={() => setSelectedRoadmap(roadmap)}
                       className={`p-3 rounded-xl cursor-pointer transition-all flex justify-between items-center group ${
                         selectedRoadmap?._id === roadmap._id
-                          ? "bg-emerald-50 dark:bg-emerald-900/30 border-indigo-200 dark:border-emerald-800"
+                          ? "bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800"
                           : "hover:bg-slate-50 dark:hover:bg-slate-700/50 border border-transparent"
                       } border`}
                     >

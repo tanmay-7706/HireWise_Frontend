@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { FaBriefcase, FaPlus, FaEdit, FaTrash, FaSpinner, FaArrowLeft, FaSearch } from "react-icons/fa"
 import { jdAPI } from "../utils/api"
+import { useToast } from "../components/Toast"
+import { useConfirm } from "../components/ConfirmModal"
 
 export default function JobDescriptions() {
   const [jds, setJds] = useState([])
@@ -11,6 +13,8 @@ export default function JobDescriptions() {
   const [editingId, setEditingId] = useState(null)
   const [searchTerm, setSearchTerm] = useState("")
   const navigate = useNavigate()
+  const toast = useToast()
+  const confirm = useConfirm()
 
   const [formData, setFormData] = useState({
     title: "",
@@ -86,14 +90,23 @@ export default function JobDescriptions() {
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this job description?")) return
+    const confirmed = await confirm({
+      title: "Delete Job Description",
+      message: "Are you sure you want to delete this job description? This action cannot be undone.",
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      type: "danger"
+    })
+    
+    if (!confirmed) return
 
     try {
       await jdAPI.delete(id)
       setJds(jds.filter((jd) => jd._id !== id))
+      toast.success("Job description deleted successfully")
     } catch (err) {
       console.error("Delete JD error:", err)
-      alert("Failed to delete job description.")
+      toast.error("Failed to delete job description")
     }
   }
 
@@ -291,17 +304,18 @@ export default function JobDescriptions() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredJDs.map((jd) => (
+            {filteredJDs.map((jd, index) => (
               <div
                 key={jd._id}
-                className="bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-all duration-300 group flex flex-col"
+                className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-all duration-300 group flex flex-col transform hover:-translate-y-1 animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="p-6 flex-1">
                   <div className="flex justify-between items-start mb-4">
-                    <div className="bg-teal-100 dark:bg-teal-900/30 p-3 rounded-xl">
+                    <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-xl group-hover:bg-teal-100 dark:group-hover:bg-teal-900/40 transition-colors">
                       <FaBriefcase className="text-2xl text-teal-600 dark:text-teal-400" />
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       <button
                         onClick={() => handleEdit(jd)}
                         className="p-2 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
@@ -324,10 +338,10 @@ export default function JobDescriptions() {
                   
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center text-sm text-slate-500 dark:text-slate-400">
-                      <span className="font-medium mr-2">Location:</span> {jd.location}
+                      <span className="font-medium mr-2 text-slate-700 dark:text-slate-300">Location:</span> {jd.location}
                     </div>
                     <div className="flex items-center text-sm text-slate-500 dark:text-slate-400">
-                      <span className="font-medium mr-2">Experience:</span> {jd.experience} years
+                      <span className="font-medium mr-2 text-slate-700 dark:text-slate-300">Experience:</span> {jd.experience} years
                     </div>
                   </div>
 
@@ -335,13 +349,13 @@ export default function JobDescriptions() {
                     {jd.requiredSkills.slice(0, 3).map((skill, index) => (
                       <span 
                         key={index}
-                        className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-md"
+                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-600"
                       >
                         {skill}
                       </span>
                     ))}
                     {jd.requiredSkills.length > 3 && (
-                      <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-md">
+                      <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-600">
                         +{jd.requiredSkills.length - 3}
                       </span>
                     )}

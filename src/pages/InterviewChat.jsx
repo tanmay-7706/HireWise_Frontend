@@ -172,7 +172,7 @@ export default function InterviewChat() {
               }`}>
                 <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
                 <p className={`text-xs mt-2 ${
-                  msg.sender === "user" ? "text-indigo-200" : "text-slate-400"
+                  msg.sender === "user" ? "text-emerald-200" : "text-slate-400"
                 }`}>
                   {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>

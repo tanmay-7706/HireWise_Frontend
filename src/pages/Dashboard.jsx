@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { FaFileUpload, FaList, FaBriefcase, FaRobot, FaUserCircle, FaSpinner } from "react-icons/fa"
+import { FaFileUpload, FaList, FaBriefcase, FaRobot, FaUserCircle, FaSpinner, FaRocket, FaStar, FaFileAlt } from "react-icons/fa"
 import { userAPI } from "../utils/api"
 
 export default function Dashboard() {
@@ -60,109 +60,145 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-[calc(100vh-64px)] bg-slate-50 dark:bg-slate-900 py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Welcome Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8 mb-8 border border-slate-100 dark:border-slate-700 animate-fade-in-up">
-          <div className="flex items-center space-x-6">
-            <div className="h-20 w-20 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center shadow-inner">
-              <FaUserCircle className="h-12 w-12 text-emerald-600 dark:text-emerald-400" />
+        <div className="relative overflow-hidden bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-8 border border-slate-100 dark:border-slate-700 animate-fade-in-up">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-50 transform translate-x-1/3 -translate-y-1/3"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-100 dark:bg-teal-900/20 rounded-full blur-3xl opacity-50 transform -translate-x-1/3 translate-y-1/3"></div>
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div className="h-24 w-24 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white text-4xl font-bold">
+              {userData?.name?.charAt(0) || "U"}
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-                Welcome back, <span className="text-emerald-600 dark:text-emerald-400">{userData?.name}</span>!
+            <div className="text-center md:text-left flex-1">
+              <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">{userData?.name}</span>!
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 mt-2 text-lg">
-                Ready to take the next step in your career?
+              <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl">
+                Your career command center is ready. Track your progress, analyze resumes, and practice for your next big interview.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Quick Actions Grid */}
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 px-2">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {/* Upload Resume Card */}
-          <div 
-            onClick={() => navigate("/resume/upload")}
-            className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 group transform hover:-translate-y-1"
-          >
-            <div className="h-14 w-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <FaFileUpload className="text-2xl text-emerald-600 dark:text-emerald-400" />
+        {/* Stats Overview (Mock Data for Visuals) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up delay-100">
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center space-x-4">
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl">
+              <FaFileAlt className="text-2xl" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Upload Resume</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Upload your resume for AI analysis and screening.
-            </p>
+            <div>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Resumes Analyzed</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">12</p>
+            </div>
           </div>
-
-          {/* My Resumes Card */}
-          <div 
-            onClick={() => navigate("/resumes")}
-            className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 group transform hover:-translate-y-1"
-          >
-            <div className="h-14 w-14 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <FaList className="text-2xl text-teal-600 dark:text-teal-400" />
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center space-x-4">
+            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl">
+              <FaRobot className="text-2xl" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">My Resumes</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              View and manage your uploaded resumes and scores.
-            </p>
+            <div>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Interviews Practiced</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">5</p>
+            </div>
           </div>
-
-          {/* Job Descriptions Card */}
-          <div 
-            onClick={() => navigate("/job-descriptions")}
-            className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 group transform hover:-translate-y-1"
-          >
-            <div className="h-14 w-14 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <FaBriefcase className="text-2xl text-amber-600 dark:text-amber-400" />
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center space-x-4">
+            <div className="p-3 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-xl">
+              <FaStar className="text-2xl" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Job Descriptions</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Manage job descriptions for resume matching.
-            </p>
-          </div>
-
-          {/* Mock Interview Card */}
-          <div 
-            onClick={() => navigate("/interview/start")}
-            className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 group transform hover:-translate-y-1"
-          >
-            <div className="h-14 w-14 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <FaRobot className="text-2xl text-rose-600 dark:text-rose-400" />
+            <div>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Avg. Match Score</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">78%</p>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Mock Interview</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Practice with AI-generated interview questions.
-            </p>
-          </div>
-
-          {/* Career Roadmap Card */}
-          <div 
-            onClick={() => navigate("/career-roadmap")}
-            className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 group transform hover:-translate-y-1"
-          >
-            <div className="h-14 w-14 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <svg className="text-2xl text-amber-600 dark:text-amber-400 w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Career Roadmap</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Get AI-powered personalized learning paths.
-            </p>
           </div>
         </div>
 
-        {/* Recent Activity or Stats could go here */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-900 dark:to-teal-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-          <div className="relative z-10">
-            <h3 className="text-2xl font-bold mb-4">Pro Tip</h3>
-            <p className="text-emerald-100 text-lg max-w-2xl">
-              Did you know? Tailoring your resume keywords to the job description can increase your chances of passing ATS by up to 70%. Use our "Screen Resume" feature to check your match score!
-            </p>
+        {/* Quick Actions Grid */}
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 px-2 flex items-center">
+            <FaRocket className="mr-3 text-emerald-600" /> Quick Actions
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Upload Resume Card */}
+            <div 
+              onClick={() => navigate("/resume/upload")}
+              className="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50 dark:bg-emerald-900/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+              <div className="h-14 w-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mb-4 relative z-10 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                <FaFileUpload className="text-2xl text-emerald-600 dark:text-emerald-400 group-hover:text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Upload Resume</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm relative z-10">
+                Get instant AI feedback and ATS scoring.
+              </p>
+            </div>
+
+            {/* My Resumes Card */}
+            <div 
+              onClick={() => navigate("/resumes")}
+              className="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-teal-50 dark:bg-teal-900/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+              <div className="h-14 w-14 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center mb-4 relative z-10 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                <FaList className="text-2xl text-teal-600 dark:text-teal-400 group-hover:text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">My Resumes</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm relative z-10">
+                Manage your portfolio and track improvements.
+              </p>
+            </div>
+
+            {/* Job Descriptions Card */}
+            <div 
+              onClick={() => navigate("/job-descriptions")}
+              className="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 dark:bg-amber-900/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+              <div className="h-14 w-14 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-4 relative z-10 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                <FaBriefcase className="text-2xl text-amber-600 dark:text-amber-400 group-hover:text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Job Descriptions</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm relative z-10">
+                Save JDs to tailor your resume perfectly.
+              </p>
+            </div>
+
+            {/* Mock Interview Card */}
+            <div 
+              onClick={() => navigate("/interview/start")}
+              className="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 dark:border-slate-700 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-rose-50 dark:bg-rose-900/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+              <div className="h-14 w-14 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center mb-4 relative z-10 group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                <FaRobot className="text-2xl text-rose-600 dark:text-rose-400 group-hover:text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Mock Interview</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm relative z-10">
+                Practice with our AI interviewer.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Pro Tip Section */}
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden animate-fade-in-up delay-200">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500 opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl font-bold mb-2 flex items-center">
+                <FaStar className="text-yellow-400 mr-2" /> Pro Tip of the Day
+              </h3>
+              <p className="text-slate-300 text-lg max-w-2xl">
+                Tailoring your resume keywords to the job description can increase your chances of passing ATS by up to 70%. Use our "Screen Resume" feature to check your match score!
+              </p>
+            </div>
+            <button 
+              onClick={() => navigate("/resumes")}
+              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/30 transition-all transform hover:-translate-y-1 whitespace-nowrap"
+            >
+              Try It Now
+            </button>
           </div>
         </div>
       </div>

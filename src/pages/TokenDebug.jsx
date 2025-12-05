@@ -1,9 +1,11 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
+import { useToast } from "../components/Toast"
 
 export default function TokenDebug() {
   const navigate = useNavigate()
+  const toast = useToast()
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -22,8 +24,8 @@ export default function TokenDebug() {
 
   const handleClearStorage = () => {
     localStorage.clear()
-    alert("LocalStorage cleared! Please login again.")
-    navigate("/login")
+    toast.success("LocalStorage cleared! Redirecting to login...")
+    setTimeout(() => navigate("/login"), 1500)
   }
 
   return (
